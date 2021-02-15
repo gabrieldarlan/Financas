@@ -5,9 +5,11 @@ import java.text.DecimalFormat
 import java.util.Locale
 
 fun BigDecimal.formataParaBrasileiro(): String? {
-    return  DecimalFormat
+
+    return DecimalFormat
         .getCurrencyInstance(Locale("pt", "br"))
         .format(this)
+        .replace("-","")
 
 
 }
