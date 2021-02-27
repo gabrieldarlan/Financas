@@ -1,6 +1,7 @@
 package br.com.gdarlan.financas.ui.activity
 
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import br.com.gdarlan.financas.R
@@ -12,6 +13,7 @@ import br.com.gdarlan.financas.model.Transacao
 import br.com.gdarlan.financas.ui.ResumoView
 import br.com.gdarlan.financas.ui.adapter.ListaTransacoesAdapter
 import br.com.gdarlan.financas.ui.dialog.AdicionaTransacaoDialog
+import br.com.gdarlan.financas.ui.dialog.AlteraTransacaoDialog
 import kotlinx.android.synthetic.main.activity_lista_transacoes.*
 
 class ListaTransacaoActivity : AppCompatActivity() {
@@ -62,6 +64,16 @@ class ListaTransacaoActivity : AppCompatActivity() {
 
     private fun configuraLista() {
         lista_transacoes_listview.adapter = ListaTransacoesAdapter(transacoes, this)
+        lista_transacoes_listview.setOnItemClickListener { parent, view, posicao, id ->
+            val transacao = transacoes[posicao]
+            AlteraTransacaoDialog(window.decorView as ViewGroup, this)
+                .chama(transacao,object :TransacaoDelegate{
+                    override fun delegate(transacao: Transacao) {
+                        atualizaTransacoes(transacao)
+                    }
+                })
+
+        }
     }
 
 }
