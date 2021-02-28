@@ -28,16 +28,18 @@ class AlteraTransacaoDialog(
     private val campoCategoria = viewCriada.form_transacao_categoria
 
     fun chama(transacao: Transacao, transacaoDelegate: TransacaoDelegate) {
+
         val tipo = transacao.tipo
+
+        configuraCampoData()
+        configuraCampoCategoria(tipo)
+        configuraFormulario(tipo, transacaoDelegate)
+
         campoValor.setText(transacao.valor.toString())
         campoData.setText(transacao.data.formataParaBrasileiro())
         val categoriasRetornadas = context.resources.getStringArray(categoriasPorTipo(tipo))
         val posicaoCategoria = categoriasRetornadas.indexOf(transacao.categoria)
         campoCategoria.setSelection(posicaoCategoria, true)
-
-        configuraCampoData()
-        configuraCampoCategoria(tipo)
-        configuraFormulario(tipo, transacaoDelegate)
     }
 
     private fun configuraFormulario(tipo: Tipo, transacaoDelegate: TransacaoDelegate) {
@@ -47,7 +49,7 @@ class AlteraTransacaoDialog(
             .Builder(context)
             .setTitle(titulo)
             .setView(viewCriada)
-            .setPositiveButton("Adicinar") { _, _ ->
+            .setPositiveButton("Alterar") { _, _ ->
                 val valorEmTexto = campoValor.text.toString()
                 val dataEmTexto = campoData.text.toString()
                 val categoriaEmTexto = campoCategoria.selectedItem.toString()
@@ -70,9 +72,9 @@ class AlteraTransacaoDialog(
 
     private fun tipoPorCategoria(tipo: Tipo): Int {
         return if (tipo == Tipo.RECEITA) {
-            R.string.adiciona_receita
+            R.string.altera_receita
         } else {
-            R.string.adiciona_despesa
+            R.string.altera_despesa
         }
     }
 

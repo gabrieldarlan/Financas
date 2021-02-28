@@ -1,7 +1,6 @@
 package br.com.gdarlan.financas.ui.activity
 
 import android.os.Bundle
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import br.com.gdarlan.financas.R
@@ -44,14 +43,14 @@ class ListaTransacaoActivity : AppCompatActivity() {
         AdicionaTransacaoDialog(window.decorView as ViewGroup, this)
             .chama(tipo, object : TransacaoDelegate {
                 override fun delegate(transacao: Transacao) {
-                    atualizaTransacoes(transacao)
+                    transacoes.add(transacao)
+                    atualizaTransacoes()
                     lista_transacoes_adiciona_menu.close(true)
                 }
             })
     }
 
-    private fun atualizaTransacoes(transacao: Transacao) {
-        transacoes.add(transacao)
+    private fun atualizaTransacoes() {
         configuraLista()
         configuraResumo()
     }
@@ -69,7 +68,8 @@ class ListaTransacaoActivity : AppCompatActivity() {
             AlteraTransacaoDialog(window.decorView as ViewGroup, this)
                 .chama(transacao,object :TransacaoDelegate{
                     override fun delegate(transacao: Transacao) {
-                        atualizaTransacoes(transacao)
+                        transacoes[posicao] = transacao
+                        atualizaTransacoes()
                     }
                 })
 
